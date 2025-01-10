@@ -29,20 +29,43 @@
 		A1C239232D31743400ABE21B /* RepLogUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RepLogUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		A1C2394E2D31756F00ABE21B /* Exceptions for "RepLog" folder in "RepLog" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+				Tests/RepLogTests/RepLogTests.swift,
+				Tests/RepLogUITests/RepLogUITests.swift,
+				Tests/RepLogUITests/RepLogUITestsLaunchTests.swift,
+			);
+			target = A1C239082D31743200ABE21B /* RepLog */;
+		};
+		A1C2394F2D31756F00ABE21B /* Exceptions for "RepLog" folder in "RepLogTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Tests/RepLogTests/RepLogTests.swift,
+			);
+			target = A1C239182D31743400ABE21B /* RepLogTests */;
+		};
+		A1C239502D31756F00ABE21B /* Exceptions for "RepLog" folder in "RepLogUITests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Tests/RepLogUITests/RepLogUITests.swift,
+				Tests/RepLogUITests/RepLogUITestsLaunchTests.swift,
+			);
+			target = A1C239222D31743400ABE21B /* RepLogUITests */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		A1C2390B2D31743200ABE21B /* RepLog */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				A1C2394E2D31756F00ABE21B /* Exceptions for "RepLog" folder in "RepLog" target */,
+				A1C2394F2D31756F00ABE21B /* Exceptions for "RepLog" folder in "RepLogTests" target */,
+				A1C239502D31756F00ABE21B /* Exceptions for "RepLog" folder in "RepLogUITests" target */,
+			);
 			path = RepLog;
-			sourceTree = "<group>";
-		};
-		A1C2391C2D31743400ABE21B /* RepLogTests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = RepLogTests;
-			sourceTree = "<group>";
-		};
-		A1C239262D31743400ABE21B /* RepLogUITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = RepLogUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -76,8 +99,6 @@
 			isa = PBXGroup;
 			children = (
 				A1C2390B2D31743200ABE21B /* RepLog */,
-				A1C2391C2D31743400ABE21B /* RepLogTests */,
-				A1C239262D31743400ABE21B /* RepLogUITests */,
 				A1C2390A2D31743200ABE21B /* Products */,
 			);
 			sourceTree = "<group>";
@@ -130,9 +151,6 @@
 			dependencies = (
 				A1C2391B2D31743400ABE21B /* PBXTargetDependency */,
 			);
-			fileSystemSynchronizedGroups = (
-				A1C2391C2D31743400ABE21B /* RepLogTests */,
-			);
 			name = RepLogTests;
 			packageProductDependencies = (
 			);
@@ -152,9 +170,6 @@
 			);
 			dependencies = (
 				A1C239252D31743400ABE21B /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				A1C239262D31743400ABE21B /* RepLogUITests */,
 			);
 			name = RepLogUITests;
 			packageProductDependencies = (
@@ -399,6 +414,7 @@
 				DEVELOPMENT_TEAM = FF795CLBBN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = RepLog/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -428,6 +444,7 @@
 				DEVELOPMENT_TEAM = FF795CLBBN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = RepLog/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
