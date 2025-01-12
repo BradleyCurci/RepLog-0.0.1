@@ -4,5 +4,9 @@
 <dict>
 	<key>AppSecret</key>
 	<string>ssAR6SlDQb4XOofR7QrSMlrtVd55Q285</string>
+	<key>APIKey</key>
+	<string>q7Y3SHAYJqKo</string>
+	<key>AppId</key>
+	<string>2ejlW2BQo9</string>
 </dict>
 </plist>

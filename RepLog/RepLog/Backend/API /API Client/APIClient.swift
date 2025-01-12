@@ -76,13 +76,31 @@ class APIClient {
         }
         
         
-        // MARK: APP SECRET
-        // This code is to be later revised for production but is acceptable for development
-        // ---------------------------------------------------------------------------------
+        // Init Info Dictionary
         guard let infoDictionary: [String : Any] = Bundle.main.infoDictionary else {
             return
         }
         
+        
+        // Add APIKey to headers
+        guard let APIKey: String = infoDictionary["APIKey"] as? String else {
+            return
+        }
+        
+        request.addValue(APIKey, forHTTPHeaderField: "X-Tadabase-App-Key")
+        
+        
+        // Add AppID to headers
+        guard let AppId: String = infoDictionary["AppId"] as? String else {
+            return
+        }
+        
+        request.addValue(AppId, forHTTPHeaderField: "X-Tadabase-App-id")
+        
+        
+        // MARK: APP SECRET
+        // This code is to be later revised for production but is acceptable for development
+        // ---------------------------------------------------------------------------------
         guard let secretKey: String = infoDictionary["AppSecret"] as? String else {
             return
         }
