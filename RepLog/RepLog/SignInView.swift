@@ -24,7 +24,6 @@ struct SignInView: View {
             }
             
             Button {
-                print("Button Clicked")
                 Task {
                     await viewModel.loadToken(email: email, password: password)
                 }

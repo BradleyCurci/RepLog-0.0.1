@@ -13,24 +13,21 @@ class TokenManager {
     
     private init() {}
     
-    func fetchToken(email: String, password: String) async throws -> Bool {
-        let url = "https://api.tadabase.io/api/v1.1/2ejlW2BQo9/auth/login"
-        let result: String = try await APIClient.shared.asyncRequest(
+    func fetchToken(email: String, password: String) async throws -> TokenModel {
+        
+        // Generate User Token
+        let url = "https://api.tadabase.io/api/v1.1/2ejlW2BQo9/auth/login" // login component
+        let result: TokenModel = try await APIClient.shared.asyncRequest(
             baseURL: url,
             method: "POST",
             parameters: ["email":email, "password":password],
-            printResponse: true,
-            printStatusCode: true
+            tokenRequired: false,
+            printResponse: false,
+            printStatusCode: false
         )
         
-        print(result)
+        return result
         
-        return true
-        
-    }
-    
-    func retrieveTokenFromKeychain() -> String? {
-        return ""
     }
 }
 
@@ -40,7 +37,7 @@ class TokenViewModel: ObservableObject {
     
     private init() {}
     
-    @Published var token: String?
+    @Published var token: TokenModel?
     @Published var isLoading: Bool = false
     @Published var error: String?
     
@@ -53,15 +50,35 @@ class TokenViewModel: ObservableObject {
         do {
             let fetchTokenResult = try await TokenManager.shared.fetchToken(email: email, password: password)
             
+            // successfully retrieved token from TB
             DispatchQueue.main.async {
+                
+                
+                // save to keychain
+                if !KeychainManager.shared.save("userToken", value: fetchTokenResult.token) {
+                    // Failed to save user token to keychain
+                    print("Failed to save token to keychain")
+                }
+                
+                
                 self.isLoading = false
-                self.token = fetchTokenResult ? "Token retrieved!" : "Token retrieval failed!"
             }
         } catch {
             DispatchQueue.main.async {
                 self.error = error.localizedDescription
+                print(self.error!)
                 self.isLoading = false
             }
         }
+    }
+    
+    
+    // retrieve user token
+    func retrieveTokenFromKeychain() -> String? {
+        guard let token = KeychainManager.shared.get("userToken") else {
+            return nil
+        }
+        
+        return token
     }
 }

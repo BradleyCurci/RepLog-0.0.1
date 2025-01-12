@@ -35,6 +35,7 @@ class APIClient {
         parameters      : [String : Any]? = nil,
         headers         : [String : String]? = nil,
         body            : Data? = nil,
+        tokenRequired   : Bool = true,
         printResponse   : Bool = false,
         printStatusCode : Bool = false,
         completion      : @escaping (Result<T, Error>) -> Void
@@ -91,8 +92,10 @@ class APIClient {
         
         
         // Add user token
-        guard let token = TokenManager.shared.retrieveTokenFromKeychain() else { return }
-        request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        if tokenRequired {
+            guard let token = TokenViewModel.shared.retrieveTokenFromKeychain() else { return }
+            request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        }
         
         
         // Parameters for non-GET requests
@@ -174,6 +177,7 @@ class APIClient {
         parameters      : [String : Any]? = nil,
         headers         : [String : String]? = nil,
         body            : Data? = nil,
+        tokenRequired   : Bool = true,
         printResponse   : Bool = false,
         printStatusCode : Bool = false
     ) async throws -> T {
@@ -184,6 +188,7 @@ class APIClient {
                 parameters: parameters,
                 headers: headers,
                 body: body,
+                tokenRequired: tokenRequired,
                 printResponse: printResponse,
                 printStatusCode: printStatusCode
             ) { (result: Result<T, Error>) in
