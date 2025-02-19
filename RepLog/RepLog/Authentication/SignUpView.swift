@@ -19,7 +19,10 @@ struct SignUpView: View {
     @State private var confirmPassword: String = ""
     
     var body: some View {
-        VStack(alignment: .leading) {
+        VStack {
+            
+            Logo()
+            
             HStack {
                 TextField("First Name", text: $firstName)
                 TextField("Last Name", text: $lastName)
@@ -39,8 +42,10 @@ struct SignUpView: View {
                 confirmPassword = "password"
             }
             
+            Spacer()
+            
             Button {
-                let user = SignUpModel(name: "\(firstName) \(lastName)", email: email, username: username, password: password)
+                let user = SignUpModel(name: "\(firstName) \(lastName)", email: email, field_169: username, password: password)
                 Task {
                     await viewModel.signUp(data: user)
                 }
@@ -55,6 +60,8 @@ struct SignUpView: View {
                 AuthenticaitonViewModel.shared.updateState(.showingSignIn)
             }
         }
+        .padding()
+        .bgLinearGradient()
     }
 }
 

@@ -20,7 +20,7 @@ class TokenManager {
         let result: TokenModel = try await APIClient.shared.asyncRequest(
             baseURL: url,
             method: "POST",
-            parameters: ["email":email, "password":password],
+            parameters: ["email":email, "password":password, "remember":60],
             tokenRequired: false,
             printResponse: false,
             printStatusCode: false
@@ -41,7 +41,7 @@ class TokenViewModel: ObservableObject {
     @Published var isLoading: Bool = false
     @Published var error: String?
     
-    func loadToken(email: String, password: String) async {
+    func loadToken(email: String, password: String) async -> (Bool, String?) {
         DispatchQueue.main.async {
             self.isLoading = true
             self.error = nil
@@ -53,22 +53,32 @@ class TokenViewModel: ObservableObject {
             // successfully retrieved token from TB
             DispatchQueue.main.async {
                 
-                
-                // save to keychain
+                // save token to keychain
                 if !KeychainManager.shared.save("userToken", value: fetchTokenResult.token) {
+                    
                     // Failed to save user token to keychain
                     print("Failed to save token to keychain")
+                } else {
+                    
+                    // schedule token refresh if user token is successfully saved
+                    SessionManager.shared.scheduleTokenRefresh()
                 }
-                
                 
                 self.isLoading = false
             }
+            
+            // Success
+            return (true, nil)
+            
         } catch {
             DispatchQueue.main.async {
                 self.error = error.localizedDescription
                 print(self.error!)
                 self.isLoading = false
             }
+            
+            //Failure
+            return (false, error.localizedDescription)
         }
     }
     
@@ -78,7 +88,6 @@ class TokenViewModel: ObservableObject {
         guard let token = KeychainManager.shared.get("userToken") else {
             return nil
         }
-        
         return token
     }
 }

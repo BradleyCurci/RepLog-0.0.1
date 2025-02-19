@@ -8,45 +8,84 @@
 import SwiftUI
 
 struct SignInView: View {
-    @StateObject private var viewModel = TokenViewModel.shared
+    
+    
+    @StateObject private var tokenViewModel = TokenViewModel.shared
+    @StateObject private var mainViewModel = MainViewModel.shared
+    
     @State private var email: String = ""
     @State private var password: String = ""
+    
     var body: some View {
-        VStack {
+        VStack() {
             
-            TextField("Email", text: $email)
-            
-            SecureField("Password", text: $password)
-            
+            VStack(spacing: 100) {
+                Logo()
+                
+                
+                VStack(spacing: 40) {
+                    TextField("", text: $email)
+                        .textFieldStyle(CustomTextField(label: "Email", text: $email))
+                    
+                    CustomSecureField(label: "Password", text: $password)
+                }
+            }
             Button("AUTOFILL") {
                 email = "bradcurci91@gmail.com"
                 password = "password"
             }
             
+            Spacer()
+            
             Button {
                 Task {
-                    await viewModel.loadToken(email: email, password: password)
+                    let response = await tokenViewModel.loadToken(email: email, password: password)
+                    if !response.0 {
+                        print("error signing in")
+                    } else {
+                        if !KeychainManager.shared.save("email", value: email) {
+                            print("Error saving email to keychain")
+                        }
+                        
+                        if !KeychainManager.shared.save("password", value: password) {
+                            print("Error saving password to keychain")
+                        }
+                        
+                        mainViewModel.updateState(.loggedIn)
+                    }
                 }
             } label: {
-                Text("Sign in")
-                    .foregroundStyle(.white)
+                Text("Sign In")
+                    .frame(maxWidth: .infinity)
                     .padding()
-                    .background(Color.blue)
+                    .foregroundColor(.BG)
+                    .background(.accent.opacity(0.8))
+                    .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
             }
+            
+            Text("Don't have an account?")
+                .foregroundStyle(.text.opacity(0.8))
+                .font(.custom("montserrat", size: 14))
+            
+            Button("Sign Up") {
+                AuthenticaitonViewModel.shared.updateState(.showingSignup)
+            }
+            .font(.custom("montserrat", size: 16))
             
         }
         .padding()
         .overlay(content: {
-            if viewModel.isLoading {
+            if tokenViewModel.isLoading {
                 Color.black.opacity(0.3)
                     .ignoresSafeArea()
                 
                 ProgressView()
             }
         })
+        .bgLinearGradient()
     }
 }
-//
-//#Preview {
-//    SignInView()
-//}
+
+#Preview {
+    SignInView()
+}
